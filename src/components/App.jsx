@@ -17,6 +17,23 @@ export class App extends Component {
     filter: '',
   };
 
+  componentDidMount() {
+    const vaultContacts = localStorage.getItem('contactsKey');
+    const parsedContacts = JSON.parse(vaultContacts);
+
+    if (parsedContacts) {
+      this.setState({ contacts: parsedContacts });
+    }
+    // console.log(parsedContacts);
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.contacts !== prevState.contacts) {
+      localStorage.setItem('contactsKey', JSON.stringify(this.state.contacts));
+    }
+    // console.log(prevState);
+  }
+
   addContact = ({ name, number }) => {
     const newId = nanoid(4);
     const names = this.state.contacts.map(contact => contact.name);
